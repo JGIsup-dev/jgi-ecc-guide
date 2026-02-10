@@ -106,6 +106,7 @@ print_info "Creating directory structure..."
 
 mkdir -p .claude/commands
 mkdir -p .claude/skills/ecc-guide/reference
+mkdir -p .claude/skills/ecc-teams/reference
 mkdir -p .claude/rules
 
 print_success "Directory structure created"
@@ -125,11 +126,20 @@ download_file "${JGI_RAW}/settings.json" "./.claude/settings.json" ".claude/sett
 # commands/guide.md
 download_file "${JGI_RAW}/commands/guide.md" "./.claude/commands/guide.md" ".claude/commands/guide.md"
 
+# commands/team.md
+download_file "${JGI_RAW}/commands/team.md" "./.claude/commands/team.md" ".claude/commands/team.md"
+
 # skills/ecc-guide/
 download_file "${JGI_RAW}/skills/ecc-guide/SKILL.md" "./.claude/skills/ecc-guide/SKILL.md" ".claude/skills/ecc-guide/SKILL.md"
 download_file "${JGI_RAW}/skills/ecc-guide/reference/commands.md" "./.claude/skills/ecc-guide/reference/commands.md" ".claude/skills/ecc-guide/reference/commands.md"
 download_file "${JGI_RAW}/skills/ecc-guide/reference/prompts.md" "./.claude/skills/ecc-guide/reference/prompts.md" ".claude/skills/ecc-guide/reference/prompts.md"
 download_file "${JGI_RAW}/skills/ecc-guide/reference/workflows.md" "./.claude/skills/ecc-guide/reference/workflows.md" ".claude/skills/ecc-guide/reference/workflows.md"
+
+# skills/ecc-teams/
+download_file "${JGI_RAW}/skills/ecc-teams/SKILL.md" "./.claude/skills/ecc-teams/SKILL.md" ".claude/skills/ecc-teams/SKILL.md"
+download_file "${JGI_RAW}/skills/ecc-teams/reference/configurations.md" "./.claude/skills/ecc-teams/reference/configurations.md" ".claude/skills/ecc-teams/reference/configurations.md"
+download_file "${JGI_RAW}/skills/ecc-teams/reference/patterns.md" "./.claude/skills/ecc-teams/reference/patterns.md" ".claude/skills/ecc-teams/reference/patterns.md"
+download_file "${JGI_RAW}/skills/ecc-teams/reference/ecc-mapping.md" "./.claude/skills/ecc-teams/reference/ecc-mapping.md" ".claude/skills/ecc-teams/reference/ecc-mapping.md"
 
 echo ""
 
@@ -177,10 +187,13 @@ echo "Installed files:"
 echo "  ./CLAUDE.md"
 echo "  ./.claude/settings.json"
 echo "  ./.claude/commands/guide.md"
+echo "  ./.claude/commands/team.md"
 echo "  ./.claude/skills/ecc-guide/"
+echo "  ./.claude/skills/ecc-teams/"
 echo "  ./.claude/rules/ (from everything-claude-code)"
 echo ""
 echo "Usage:"
 echo "  Run Claude Code in this directory and use:"
 echo "  ${BLUE}/guide${NC} - Get ECC command recommendations"
+echo "  ${BLUE}/team${NC}  - Get Agent Teams configuration guide"
 echo ""

@@ -44,7 +44,7 @@ curl -fsSL https://raw.githubusercontent.com/JGIsup-dev/jgi-ecc-guide/main/insta
 your-project/
 ├── CLAUDE.md                          ← プロジェクト設定（初回編集）
 └── .claude/
-    ├── settings.json                  ← ECC有効化設定
+    ├── settings.json                  ← ECC有効化 + Agent Teams設定
     ├── rules/                         ← ECCルール（everything-claude-codeから取得）
     │   ├── agents.md
     │   ├── coding-style.md
@@ -55,14 +55,21 @@ your-project/
     │   ├── security.md
     │   └── testing.md
     ├── commands/
-    │   └── guide.md                   ← /guide コマンド
+    │   ├── guide.md                   ← /guide コマンド
+    │   └── team.md                    ← /team コマンド（Agent Teams）
     └── skills/
-        └── ecc-guide/
+        ├── ecc-guide/
+        │   ├── SKILL.md
+        │   └── reference/
+        │       ├── commands.md
+        │       ├── prompts.md
+        │       └── workflows.md
+        └── ecc-teams/
             ├── SKILL.md
             └── reference/
-                ├── commands.md
-                ├── prompts.md
-                └── workflows.md
+                ├── configurations.md
+                ├── patterns.md
+                └── ecc-mapping.md
 ```
 
 ## 使い方
@@ -125,6 +132,41 @@ claude
 | ドキュメント | `/update-codemaps` | コードマップ更新 |
 | 管理 | `/sessions` | セッション管理 |
 | 管理 | `/setup-pm` | プロジェクト管理セットアップ |
+
+## Agent Teams (experimental)
+
+Agent Teamsを使って、複数のClaude Codeインスタンスで並列開発ができます。
+
+### 前提条件
+
+- Claude Code最新版
+- Agent Teams実験フラグ有効化（install.shで設定可能）
+- tmux推奨（3人以上のチームでは必須級）
+
+### 使い方
+
+```bash
+# Claude Codeで /team コマンドを使用
+/team フロントエンドとバックエンドを並列で開発したい
+```
+
+### 主なチーム構成テンプレート
+
+| 構成名 | 人数 | 用途 |
+|--------|-----|------|
+| `duo-fullstack` | 2 | フロント+バック並列 |
+| `squad-feature` | 3-4 | 大規模機能分割 |
+| `review-panel` | 2-3 | 多角的レビュー |
+| `tdd-factory` | 2-3 | テスト集中 |
+| `bugfix-swarm` | 2-3 | バグ調査修正 |
+| `architecture-team` | 3-4 | 設計変更 |
+| `sprint-team` | 3-5 | スプリント並列消化 |
+| `docs-and-code` | 2 | 実装+ドキュメント |
+
+### `/guide` と `/team` の使い分け
+
+- `/guide`: ソロ作業でどのECCコマンドを使うか迷った時
+- `/team`: 複数エージェントで並列開発したい時（2時間以上のタスク向き）
 
 ## ライセンス
 
