@@ -22,7 +22,7 @@ BRANCH="main"
 
 # Base URLs
 JGI_RAW="https://raw.githubusercontent.com/${JGI_REPO}/${BRANCH}"
-ECC_RAW="https://raw.githubusercontent.com/${ECC_REPO}/${BRANCH}"
+ECC_TARBALL="https://github.com/${ECC_REPO}/archive/${BRANCH}.tar.gz"
 
 # =============================================================================
 # Helper Functions
@@ -138,20 +138,31 @@ echo ""
 # -----------------------------------------------------------------------------
 print_info "Downloading rules from everything-claude-code..."
 
-RULES_FILES=(
-    "agents.md"
-    "coding-style.md"
-    "git-workflow.md"
-    "hooks.md"
-    "patterns.md"
-    "performance.md"
-    "security.md"
-    "testing.md"
-)
+ECC_TEMP_DIR=$(mktemp -d)
 
-for rule_file in "${RULES_FILES[@]}"; do
-    download_file "${ECC_RAW}/rules/${rule_file}" "./.claude/rules/${rule_file}" ".claude/rules/${rule_file}"
-done
+if curl -fsSL "${ECC_TARBALL}" -o "${ECC_TEMP_DIR}/ecc.tar.gz"; then
+    tar -xzf "${ECC_TEMP_DIR}/ecc.tar.gz" -C "${ECC_TEMP_DIR}" --strip-components=1 "everything-claude-code-${BRANCH}/rules" 2>/dev/null
+    if [ -d "${ECC_TEMP_DIR}/rules" ]; then
+        rules_count=0
+        for rule_file in "${ECC_TEMP_DIR}"/rules/*.md; do
+            if [ -f "$rule_file" ]; then
+                filename=$(basename "$rule_file")
+                if check_existing_file "./.claude/rules/${filename}"; then
+                    cp "$rule_file" "./.claude/rules/${filename}"
+                    print_success ".claude/rules/${filename}"
+                fi
+                rules_count=$((rules_count + 1))
+            fi
+        done
+        print_info "Rules: ${rules_count} files processed"
+    else
+        print_error "Rules directory not found in archive"
+    fi
+else
+    print_error "Failed to download everything-claude-code"
+fi
+
+rm -rf "${ECC_TEMP_DIR}"
 
 echo ""
 
